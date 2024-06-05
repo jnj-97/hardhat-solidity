@@ -2,9 +2,11 @@ const ethers = require("ethers");
 const fs = require("fs");
 
 async function main() {
-  const provider = new ethers.JsonRpcProvider("http://127.0.0.1:7545");
+  const provider = new ethers.JsonRpcProvider(
+    "https://eth-sepolia.g.alchemy.com/v2/3YX6cYG01C0P17GPQsSZEFfJHH-ifUuL"
+  );
   const wallet = new ethers.Wallet(
-    "0x30f0d6f5bd0a91a5e3dbe4e30e24b3f592dd3b2a43b2751cf63ba7ee9837e507",
+    "edc0df3fa32101365765c63c91bebc5a1371731e2c99ce5f766b9849cdb0fd81",
     provider
   );
   const abi = fs.readFileSync("./SimpleStorage_sol_SimpleStorage.abi", "utf8");
@@ -14,10 +16,15 @@ async function main() {
   );
   const contractFactory = new ethers.ContractFactory(abi, binary, wallet);
   const contract = await contractFactory.deploy();
-  //await contract.deploymentTransaction().wait(1);
+  await contract.deploymentTransaction().wait(1); // Wait for deployment
+  console.log("Contract Address: ", await contract.getAddress());
+
   let favoriteNumber = await contract.viewFavorite();
   console.log("Favorite number: ", favoriteNumber.toString());
-  await contract.changeNumber(10);
+
+  const tx = await contract.changeNumber(10); // This returns a transaction
+  await tx.wait(1); // Wait for the changeNumber transaction to be mined
+
   favoriteNumber = await contract.viewFavorite();
   console.log("Favorite number: ", favoriteNumber.toString());
 }
