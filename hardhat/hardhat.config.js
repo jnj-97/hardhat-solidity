@@ -1,4 +1,5 @@
 require("@nomicfoundation/hardhat-toolbox");
+require("@nomicfoundation/hardhat-verify");
 require("dotenv").config();
 require("hardhat-deploy");
 // require("@nomiclabs/hardhat-etherscan");
@@ -26,7 +27,12 @@ module.exports = {
     currency: "INR",
     coinmarketcap: process.env.COINMARKETCAP_API_KEY,
   },
+  sourcify: {
+    enabled: true,
+  },
   etherscan: {
-    apiKey: process.env.ETHERSCAN_API_KEY,
+    apiKey: {
+      sepolia: process.env.ETHERSCAN_API_KEY,
+    },
   },
 };

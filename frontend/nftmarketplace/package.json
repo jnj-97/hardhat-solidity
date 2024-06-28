@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "ethers": "^5.0.0",
     "moralis": "^2.26.6",
     "next": "14.2.4",
     "react": "^18",
